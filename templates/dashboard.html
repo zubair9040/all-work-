@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ERP Dashboard</title>
+<style>
+  body{font-family:system-ui,sans-serif;margin:0;background:#f4f6f8;color:#1c2733}
+  header{background:#1f3a5f;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+  header a{color:#fff;margin-left:16px}
+  main{max-width:1100px;margin:24px auto;padding:0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 3px #0001}
+  .card b{display:block;font-size:1.6em;margin-top:6px}
+  h2{margin-top:28px}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
+  td,th{padding:8px 12px;text-align:left;border-bottom:1px solid #eee}
+  .nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .nav a{background:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;color:#1f3a5f;box-shadow:0 1px 3px #0001}
+</style>
+</head>
+<body>
+<header><strong>ERP</strong><span>{{ request.user }}<a href="/admin/">Admin</a></span></header>
+<main>
+  <div class="grid">
+    <div class="card">Sales this month<b>{{ month_sales }}</b></div>
+    <div class="card">Receivable<b>{{ receivable }}</b></div>
+    <div class="card">Payable<b>{{ payable }}</b></div>
+    <div class="card">Net profit<b>{{ profit }}</b></div>
+    <div class="card">Draft sales orders<b>{{ draft_sales }}</b></div>
+    <div class="card">Draft purchase orders<b>{{ draft_purchases }}</b></div>
+    <div class="card">Active employees<b>{{ employees }}</b></div>
+    <div class="card">Pending leave<b>{{ pending_leave }}</b></div>
+  </div>
+
+  <h2>Modules</h2>
+  <div class="nav">
+    <a href="/admin/inventory/product/">Products</a>
+    <a href="/admin/inventory/stockmovement/">Stock ledger</a>
+    <a href="/admin/sales/salesorder/">Sales orders</a>
+    <a href="/admin/sales/invoice/">Invoices</a>
+    <a href="/admin/purchasing/purchaseorder/">Purchase orders</a>
+    <a href="/admin/accounting/payment/">Payments</a>
+    <a href="/admin/accounting/account/">Chart of accounts</a>
+    <a href="/admin/accounting/journalentry/">Journal</a>
+    <a href="/admin/hr/employee/">Employees</a>
+    <a href="/admin/hr/payslip/">Payroll</a>
+  </div>
+
+  <h2>Low stock</h2>
+  <table>
+    <tr><th>SKU</th><th>Product</th><th>On hand</th><th>Reorder level</th></tr>
+    {% for p in low_stock %}<tr><td>{{ p.sku }}</td><td>{{ p.name }}</td><td>{{ p.on_hand }}</td><td>{{ p.reorder_level }}</td></tr>
+    {% empty %}<tr><td colspan="4">Nothing to reorder.</td></tr>{% endfor %}
+  </table>
+
+  <h2>Overdue invoices</h2>
+  <table>
+    <tr><th>Invoice</th><th>Customer</th><th>Due</th><th>Balance</th></tr>
+    {% for i in overdue %}<tr><td>{{ i.number }}</td><td>{{ i.order.customer }}</td><td>{{ i.due_date }}</td><td>{{ i.balance_due }}</td></tr>
+    {% empty %}<tr><td colspan="4">None.</td></tr>{% endfor %}
+  </table>
+</main>
+</body>
+</html>
