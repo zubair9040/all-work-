@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - ERP System</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+       background:linear-gradient(90deg,#262d5e 50%,#f3f4fb 50%)}
+  .card{display:flex;width:min(820px,calc(100% - 32px));min-height:425px;border-radius:22px;overflow:hidden;
+        box-shadow:0 24px 60px #1f245733}
+  .art{flex:1;background:radial-gradient(circle at 20% 10%,#5b44a8,transparent 45%),linear-gradient(160deg,#35358a,#4f46dd);
+       display:flex;flex-direction:column;align-items:center;justify-content:center;color:#d9dcff;font-size:13px;padding:24px}
+  .art svg{width:100%;max-width:340px;height:auto}
+  .art p{margin:14px 0 0;letter-spacing:.3px}
+  .form{flex:1;background:#fff;padding:44px 40px;display:flex;flex-direction:column;justify-content:center}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:#1e1b4b}
+  .brand span{color:#6366f1}
+  h1{margin:26px 0 2px;font-size:25px;letter-spacing:.5px;color:#4338ca;text-transform:uppercase}
+  .sub{font-size:12px;color:#6b7280;margin:0 0 18px}
+  label{display:block;font-size:11px;font-weight:700;color:#1f2937;margin:12px 0 5px}
+  .field{position:relative}
+  input[type=text],input[type=password]{width:100%;padding:11px 12px;border:1px solid #dfe3ee;border-radius:9px;
+        background:#f6f7fc;font:inherit;font-size:13px}
+  input:focus{outline:2px solid #818cf8;background:#fff;border-color:#6366f1}
+  #toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;cursor:pointer;
+        color:#6b7280;font-size:12px;padding:4px 6px}
+  .row{display:flex;justify-content:space-between;align-items:center;margin:12px 0 4px;font-size:12px;color:#4b5563}
+  .row label{display:flex;gap:6px;align-items:center;margin:0;font-weight:500;font-size:12px}
+  button.go{margin-top:12px;width:100%;padding:12px;border:0;border-radius:9px;color:#fff;font-weight:700;font-size:14px;
+        cursor:pointer;background:linear-gradient(90deg,#5b63f0,#7c5cf0);box-shadow:0 6px 16px #6366f155}
+  button.go:disabled{opacity:.7;cursor:wait}
+  .err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 12px;font-size:12px;margin-bottom:6px}
+  .foot{margin-top:22px;text-align:center;font-size:11px;color:#9ca3af}
+  @media (max-width:640px){
+    body{align-items:flex-start;padding:28px 0 24px;background:linear-gradient(180deg,#262d5e 0,#262d5e 300px,#eceef8 300px)}
+    .card{flex-direction:column;min-height:0;box-shadow:0 14px 34px #1f245744}
+    .art{flex:none;padding:20px 16px 14px}
+    .art svg{max-width:280px}
+    .art p{font-size:11px;text-align:center;margin-top:8px}
+    .form{padding:26px 22px 22px}
+    h1{margin-top:20px;font-size:23px}
+    input[type=text],input[type=password]{font-size:16px;padding:13px 12px} /* 16px stops iOS zoom */
+    button.go{padding:14px}
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="art" aria-hidden="true">
+    <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gbar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b72f2"/><stop offset="1" stop-color="#b7bbfa"/></linearGradient>
+        <linearGradient id="gscr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eceeff"/></linearGradient>
+        <radialGradient id="gglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      </defs>
+      <!-- soft halo -->
+      <circle cx="200" cy="150" r="130" fill="url(#gglow)"/>
+      <circle cx="200" cy="150" r="92" fill="#ffffff12"/>
+      <circle cx="34" cy="196" r="8" fill="#ffffff30"/>
+      <!-- platform -->
+      <polygon points="30,250 200,170 370,250 200,330" fill="#e3e4fb"/>
+      <polygon points="30,250 200,330 200,340 30,260" fill="#a9abe8"/>
+      <polygon points="370,250 200,330 200,340 370,260" fill="#8f92de"/>
+      <polygon points="60,250 200,184 340,250 200,316" fill="#eceefe"/>
+      <!-- monitor stand -->
+      <rect x="187" y="172" width="26" height="26" fill="#b9bdf2"/>
+      <ellipse cx="200" cy="203" rx="38" ry="7" fill="#9ca1ea"/>
+      <ellipse cx="200" cy="200" rx="38" ry="7" fill="#b7bbf4"/>
+      <!-- monitor -->
+      <rect x="112" y="46" width="176" height="130" rx="9" fill="#f6f7ff"/>
+      <path d="M112 55a9 9 0 0 1 9-9h158a9 9 0 0 1 9 9v7H112z" fill="#6b72f2"/>
+      <g fill="#fff"><circle cx="124" cy="54" r="2.6"/><circle cx="134" cy="54" r="2.6" fill-opacity=".8"/><circle cx="144" cy="54" r="2.6" fill-opacity=".6"/></g>
+      <rect x="120" y="70" width="160" height="98" rx="4" fill="url(#gscr)"/>
+      <g fill="url(#gbar)">
+        <rect x="130" y="124" width="14" height="38" rx="3"/><rect x="150" y="108" width="14" height="54" rx="3"/>
+        <rect x="170" y="116" width="14" height="46" rx="3"/><rect x="190" y="92" width="14" height="70" rx="3"/>
+        <rect x="210" y="102" width="14" height="60" rx="3"/><rect x="230" y="80" width="14" height="82" rx="3"/>
+      </g>
+      <polyline points="132,104 156,88 178,98 198,76 220,84 238,66" fill="none" stroke="#1db684" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="238" cy="66" r="4.5" fill="#1db684" stroke="#fff" stroke-width="2"/>
+      <g fill="#dcdffa"><rect x="252" y="86" width="22" height="6" rx="3"/><rect x="252" y="100" width="16" height="6" rx="3"/><rect x="252" y="114" width="20" height="6" rx="3"/></g>
+      <!-- donut card -->
+      <rect x="296" y="28" width="68" height="68" rx="12" fill="#fff"/>
+      <circle cx="330" cy="62" r="19" fill="none" stroke="#6b72f2" stroke-width="11"/>
+      <circle cx="330" cy="62" r="19" fill="none" stroke="#f5a623" stroke-width="11" stroke-dasharray="26 120" transform="rotate(140 330 62)"/>
+      <circle cx="330" cy="62" r="19" fill="none" stroke="#e5e7ff" stroke-width="11" stroke-dasharray="14 120" transform="rotate(-95 330 62)"/>
+      <!-- chat bubble -->
+      <path d="M44 28h72a12 12 0 0 1 12 12v22a12 12 0 0 1-12 12H66l-14 12v-12h-8a12 12 0 0 1-12-12V40a12 12 0 0 1 12-12z" fill="#1db684"/>
+      <g fill="#fff"><circle cx="64" cy="51" r="4"/><circle cx="80" cy="51" r="4"/><circle cx="96" cy="51" r="4"/></g>
+      <!-- document card -->
+      <g transform="rotate(-8 62 160)">
+        <rect x="28" y="108" width="68" height="92" rx="9" fill="#fff"/>
+        <rect x="38" y="120" width="30" height="8" rx="4" fill="#6b72f2"/>
+        <g fill="#dfe2fb"><rect x="38" y="138" width="48" height="5" rx="2.5"/><rect x="38" y="150" width="42" height="5" rx="2.5"/><rect x="38" y="162" width="46" height="5" rx="2.5"/></g>
+        <rect x="38" y="178" width="24" height="9" rx="4.5" fill="#1db684"/>
+      </g>
+      <!-- coins -->
+      <g>
+        <ellipse cx="102" cy="268" rx="26" ry="9" fill="#d9941c"/>
+        <rect x="76" y="256" width="52" height="12" fill="#f2b232"/><ellipse cx="102" cy="256" rx="26" ry="9" fill="#f7c85a"/>
+        <ellipse cx="102" cy="254" rx="26" ry="9" fill="#d9941c"/>
+        <rect x="76" y="242" width="52" height="12" fill="#f2b232"/><ellipse cx="102" cy="242" rx="26" ry="9" fill="#f7c85a"/>
+        <ellipse cx="102" cy="240" rx="26" ry="9" fill="#d9941c"/>
+        <rect x="76" y="228" width="52" height="12" fill="#f2b232"/><ellipse cx="102" cy="228" rx="26" ry="9" fill="#fbd97a"/>
+      </g>
+      <!-- plant with check leaf -->
+      <path d="M216 214l12 12 22-26" fill="none" stroke="#1db684" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="219" y="228" width="20" height="22" rx="4" fill="#fff"/>
+      <rect x="219" y="228" width="20" height="5" rx="2" fill="#dfe2fb"/>
+      <!-- boxes -->
+      <polygon points="329,205 358,219 329,233 300,219" fill="#fbb844"/>
+      <polygon points="300,219 329,233 329,268 300,254" fill="#e8921a"/>
+      <polygon points="329,233 358,219 358,254 329,268" fill="#f5a623"/>
+      <polygon points="329,177 347,186 329,195 311,186" fill="#fcc766"/>
+      <polygon points="311,186 329,195 329,215 311,206" fill="#e8921a"/>
+      <polygon points="329,195 347,186 347,206 329,215" fill="#f5a623"/>
+    </svg>
+    <p>Sales · Payments · Warehouse · Payroll · Reports</p>
+  </div>
+
+  <div class="form">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30"><polygon points="15,1 28,8 28,22 15,29 2,22 2,8" fill="#6366f1"/>
+        <circle cx="15" cy="15" r="2.5" fill="#fff"/><path d="M15 15V8M15 15l-6 4M15 15l6 4" stroke="#fff" stroke-width="2"/></svg>
+      ERP <span>System</span>
+    </div>
+    <h1>Welcome</h1>
+    <p class="sub">Sign in to continue</p>
+
+    <form method="post" id="login-form" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {% if locked_minutes %}<div class="err" role="alert">Too many failed attempts. Please try again in about {{ locked_minutes }} minute{{ locked_minutes|pluralize }}.</div>
+      {% elif form.errors %}<div class="err" role="alert">Incorrect username or password. Please try again.</div>{% endif %}
+
+      <label for="id_username">Username</label>
+      <input type="text" name="username" id="id_username" placeholder="Enter your username"
+             autocomplete="username" autofocus required value="{{ form.username.value|default:'' }}">
+
+      <label for="id_password">Password</label>
+      <div class="field">
+        <input type="password" name="password" id="id_password" placeholder="Enter your password"
+               autocomplete="current-password" required>
+        <button type="button" id="toggle" aria-label="Show password">Show</button>
+      </div>
+
+      <div class="row"><label><input type="checkbox" name="remember"> Remember me for 30 days</label></div>
+
+      <button class="go" type="submit" id="submit">Sign in &rsaquo;</button>
+    </form>
+    <div class="foot">ERP System &nbsp;·&nbsp; M.R Enterprises</div>
+  </div>
+</div>
+<script>
+  var pw = document.getElementById('id_password'), t = document.getElementById('toggle');
+  t.addEventListener('click', function () {
+    var show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    t.textContent = show ? 'Hide' : 'Show';
+    t.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  });
+  document.getElementById('login-form').addEventListener('submit', function () {
+    var b = document.getElementById('submit'); b.disabled = true; b.textContent = 'Signing in…';
+  });
+</script>
+</body>
+</html>
