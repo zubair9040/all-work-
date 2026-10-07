@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - ERP System</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+       background:linear-gradient(90deg,#262d5e 50%,#f3f4fb 50%)}
+  .card{display:flex;width:min(820px,calc(100% - 32px));min-height:425px;border-radius:22px;overflow:hidden;
+        box-shadow:0 24px 60px #1f245733}
+  .art{flex:1;background:radial-gradient(circle at 20% 10%,#5b44a8,transparent 45%),linear-gradient(160deg,#35358a,#4f46dd);
+       display:flex;flex-direction:column;align-items:center;justify-content:center;color:#d9dcff;font-size:13px;padding:24px}
+  .art svg{width:100%;max-width:300px;height:auto}
+  .art p{margin:14px 0 0;letter-spacing:.3px}
+  .form{flex:1;background:#fff;padding:44px 40px;display:flex;flex-direction:column;justify-content:center}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:#1e1b4b}
+  .brand span{color:#6366f1}
+  h1{margin:26px 0 2px;font-size:25px;letter-spacing:.5px;color:#4338ca;text-transform:uppercase}
+  .sub{font-size:12px;color:#6b7280;margin:0 0 18px}
+  label{display:block;font-size:11px;font-weight:700;color:#1f2937;margin:12px 0 5px}
+  .field{position:relative}
+  input[type=text],input[type=password]{width:100%;padding:11px 12px;border:1px solid #dfe3ee;border-radius:9px;
+        background:#f6f7fc;font:inherit;font-size:13px}
+  input:focus{outline:2px solid #818cf8;background:#fff;border-color:#6366f1}
+  #toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;cursor:pointer;
+        color:#6b7280;font-size:12px;padding:4px 6px}
+  .row{display:flex;justify-content:space-between;align-items:center;margin:12px 0 4px;font-size:12px;color:#4b5563}
+  .row label{display:flex;gap:6px;align-items:center;margin:0;font-weight:500;font-size:12px}
+  button.go{margin-top:12px;width:100%;padding:12px;border:0;border-radius:9px;color:#fff;font-weight:700;font-size:14px;
+        cursor:pointer;background:linear-gradient(90deg,#5b63f0,#7c5cf0);box-shadow:0 6px 16px #6366f155}
+  button.go:disabled{opacity:.7;cursor:wait}
+  .err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 12px;font-size:12px;margin-bottom:6px}
+  .foot{margin-top:22px;text-align:center;font-size:11px;color:#9ca3af}
+  @media (max-width:640px){
+    body{background:#f3f4fb}
+    .art{display:none}
+    .form{padding:32px 24px}
+    .card{box-shadow:0 8px 24px #1f245722}
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="art" aria-hidden="true">
+    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="150" cy="110" r="85" fill="#ffffff14"/>
+      <polygon points="20,190 150,130 280,190 150,235" fill="#dcdcf8"/>
+      <rect x="62" y="35" width="150" height="100" rx="6" fill="#fff"/>
+      <rect x="62" y="35" width="150" height="14" rx="6" fill="#6b72f2"/>
+      <g fill="#7c83f3"><rect x="76" y="92" width="11" height="30" rx="2"/><rect x="94" y="82" width="11" height="40" rx="2"/>
+        <rect x="112" y="88" width="11" height="34" rx="2"/><rect x="130" y="70" width="11" height="52" rx="2"/>
+        <rect x="148" y="76" width="11" height="46" rx="2"/><rect x="166" y="60" width="11" height="62" rx="2"/></g>
+      <polyline points="76,80 94,68 112,76 130,58 148,62 177,52" fill="none" stroke="#1db684" stroke-width="2"/>
+      <rect x="125" y="135" width="26" height="14" fill="#b9bdf0"/><rect x="108" y="147" width="60" height="6" rx="3" fill="#a4a9ea"/>
+      <rect x="205" y="22" width="52" height="52" rx="8" fill="#fff"/>
+      <circle cx="231" cy="48" r="16" fill="none" stroke="#6b72f2" stroke-width="9"/>
+      <path d="M231 32 A16 16 0 0 1 247 48" fill="none" stroke="#f5a623" stroke-width="9"/>
+      <rect x="8" y="42" width="58" height="22" rx="6" fill="#1db684"/>
+      <g fill="#fff"><circle cx="22" cy="53" r="2.5"/><circle cx="34" cy="53" r="2.5"/><circle cx="46" cy="53" r="2.5"/></g>
+      <rect x="226" y="140" width="34" height="34" fill="#f5a623"/><rect x="236" y="116" width="22" height="22" fill="#f8b84e"/>
+      <ellipse cx="82" cy="170" rx="17" ry="7" fill="#f5c24a"/><rect x="65" y="158" width="34" height="12" fill="#f5c24a"/>
+    </svg>
+    <p>Sales · Payments · Warehouse · Payroll · Reports</p>
+  </div>
+
+  <div class="form">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30"><polygon points="15,1 28,8 28,22 15,29 2,22 2,8" fill="#6366f1"/>
+        <circle cx="15" cy="15" r="2.5" fill="#fff"/><path d="M15 15V8M15 15l-6 4M15 15l6 4" stroke="#fff" stroke-width="2"/></svg>
+      ERP <span>System</span>
+    </div>
+    <h1>Welcome</h1>
+    <p class="sub">Sign in to continue</p>
+
+    <form method="post" id="login-form" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {% if form.errors %}<div class="err" role="alert">Incorrect username or password. Please try again.</div>{% endif %}
+
+      <label for="id_username">Username</label>
+      <input type="text" name="username" id="id_username" placeholder="Enter your username"
+             autocomplete="username" autofocus required value="{{ form.username.value|default:'' }}">
+
+      <label for="id_password">Password</label>
+      <div class="field">
+        <input type="password" name="password" id="id_password" placeholder="Enter your password"
+               autocomplete="current-password" required>
+        <button type="button" id="toggle" aria-label="Show password">Show</button>
+      </div>
+
+      <div class="row"><label><input type="checkbox" name="remember"> Remember me for 30 days</label></div>
+
+      <button class="go" type="submit" id="submit">Sign in &rsaquo;</button>
+    </form>
+    <div class="foot">ERP System &nbsp;·&nbsp; M.R Enterprises</div>
+  </div>
+</div>
+<script>
+  var pw = document.getElementById('id_password'), t = document.getElementById('toggle');
+  t.addEventListener('click', function () {
+    var show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    t.textContent = show ? 'Hide' : 'Show';
+    t.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  });
+  document.getElementById('login-form').addEventListener('submit', function () {
+    var b = document.getElementById('submit'); b.disabled = true; b.textContent = 'Signing in…';
+  });
+</script>
+</body>
+</html>

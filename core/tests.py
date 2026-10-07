@@ -96,3 +96,34 @@ class ERPFlowTests(TestCase):
         u = get_user_model().objects.create_superuser("a", "a@x.com", "pw")
         self.client.force_login(u)
         self.assertEqual(self.client.get("/").status_code, 200)
+
+
+class LoginPageTests(TestCase):
+    def setUp(self):
+        self.u = get_user_model().objects.create_user("bob", password="pw12345!")
+
+    def test_login_page_renders(self):
+        r = self.client.get("/login/")
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "Welcome")
+
+    def test_anonymous_redirected_to_login(self):
+        self.assertRedirects(self.client.get("/", follow=False), "/login/?next=/", fetch_redirect_response=False)
+        self.assertEqual(self.client.get("/admin/").status_code, 302)
+
+    def test_bad_password_shows_error(self):
+        r = self.client.post("/login/", {"username": "bob", "password": "nope"})
+        self.assertContains(r, "Incorrect username or password")
+
+    def test_login_redirects_to_dashboard_and_session_ends_with_browser(self):
+        r = self.client.post("/login/", {"username": "bob", "password": "pw12345!"})
+        self.assertRedirects(r, "/", fetch_redirect_response=False)
+        self.assertTrue(self.client.session.get_expire_at_browser_close())
+
+    def test_remember_me_keeps_session_30_days(self):
+        self.client.post("/login/", {"username": "bob", "password": "pw12345!", "remember": "on"})
+        self.assertEqual(self.client.session.get_expiry_age(), 60 * 60 * 24 * 30)
+
+    def test_logout(self):
+        self.client.force_login(self.u)
+        self.assertRedirects(self.client.post("/logout/"), "/login/", fetch_redirect_response=False)

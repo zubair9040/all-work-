@@ -20,7 +20,7 @@
 </style>
 </head>
 <body>
-<header><strong>ERP</strong><span>{{ request.user }}<a href="/admin/">Admin</a></span></header>
+<header><strong>ERP</strong><span>{{ request.user }}<a href="/admin/">Admin</a><form method="post" action="/logout/" style="display:inline">{% csrf_token %}<button style="margin-left:16px;background:none;border:0;color:#fff;cursor:pointer;font:inherit;text-decoration:underline">Sign out</button></form></span></header>
 <main>
   <div class="grid">
     <div class="card">Sales this month<b>{{ month_sales }}</b></div>
