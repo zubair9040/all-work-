@@ -13,7 +13,7 @@
         box-shadow:0 24px 60px #1f245733}
   .art{flex:1;background:radial-gradient(circle at 20% 10%,#5b44a8,transparent 45%),linear-gradient(160deg,#35358a,#4f46dd);
        display:flex;flex-direction:column;align-items:center;justify-content:center;color:#d9dcff;font-size:13px;padding:24px}
-  .art svg{width:100%;max-width:300px;height:auto}
+  .art svg{width:100%;max-width:340px;height:auto}
   .art p{margin:14px 0 0;letter-spacing:.3px}
   .form{flex:1;background:#fff;padding:44px 40px;display:flex;flex-direction:column;justify-content:center}
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:#1e1b4b}
@@ -38,7 +38,7 @@
     body{align-items:flex-start;padding:28px 0 24px;background:linear-gradient(180deg,#262d5e 0,#262d5e 300px,#eceef8 300px)}
     .card{flex-direction:column;min-height:0;box-shadow:0 14px 34px #1f245744}
     .art{flex:none;padding:20px 16px 14px}
-    .art svg{max-width:260px}
+    .art svg{max-width:280px}
     .art p{font-size:11px;text-align:center;margin-top:8px}
     .form{padding:26px 22px 22px}
     h1{margin-top:20px;font-size:23px}
@@ -50,23 +50,73 @@
 <body>
 <div class="card">
   <div class="art" aria-hidden="true">
-    <svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="150" cy="110" r="85" fill="#ffffff14"/>
-      <polygon points="20,190 150,130 280,190 150,235" fill="#dcdcf8"/>
-      <rect x="62" y="35" width="150" height="100" rx="6" fill="#fff"/>
-      <rect x="62" y="35" width="150" height="14" rx="6" fill="#6b72f2"/>
-      <g fill="#7c83f3"><rect x="76" y="92" width="11" height="30" rx="2"/><rect x="94" y="82" width="11" height="40" rx="2"/>
-        <rect x="112" y="88" width="11" height="34" rx="2"/><rect x="130" y="70" width="11" height="52" rx="2"/>
-        <rect x="148" y="76" width="11" height="46" rx="2"/><rect x="166" y="60" width="11" height="62" rx="2"/></g>
-      <polyline points="76,80 94,68 112,76 130,58 148,62 177,52" fill="none" stroke="#1db684" stroke-width="2"/>
-      <rect x="125" y="135" width="26" height="14" fill="#b9bdf0"/><rect x="108" y="147" width="60" height="6" rx="3" fill="#a4a9ea"/>
-      <rect x="205" y="22" width="52" height="52" rx="8" fill="#fff"/>
-      <circle cx="231" cy="48" r="16" fill="none" stroke="#6b72f2" stroke-width="9"/>
-      <path d="M231 32 A16 16 0 0 1 247 48" fill="none" stroke="#f5a623" stroke-width="9"/>
-      <rect x="8" y="42" width="58" height="22" rx="6" fill="#1db684"/>
-      <g fill="#fff"><circle cx="22" cy="53" r="2.5"/><circle cx="34" cy="53" r="2.5"/><circle cx="46" cy="53" r="2.5"/></g>
-      <rect x="226" y="140" width="34" height="34" fill="#f5a623"/><rect x="236" y="116" width="22" height="22" fill="#f8b84e"/>
-      <ellipse cx="82" cy="170" rx="17" ry="7" fill="#f5c24a"/><rect x="65" y="158" width="34" height="12" fill="#f5c24a"/>
+    <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gbar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b72f2"/><stop offset="1" stop-color="#b7bbfa"/></linearGradient>
+        <linearGradient id="gscr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eceeff"/></linearGradient>
+        <radialGradient id="gglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      </defs>
+      <!-- soft halo -->
+      <circle cx="200" cy="150" r="130" fill="url(#gglow)"/>
+      <circle cx="200" cy="150" r="92" fill="#ffffff12"/>
+      <circle cx="34" cy="196" r="8" fill="#ffffff30"/>
+      <!-- platform -->
+      <polygon points="30,250 200,170 370,250 200,330" fill="#e3e4fb"/>
+      <polygon points="30,250 200,330 200,340 30,260" fill="#a9abe8"/>
+      <polygon points="370,250 200,330 200,340 370,260" fill="#8f92de"/>
+      <polygon points="60,250 200,184 340,250 200,316" fill="#eceefe"/>
+      <!-- monitor stand -->
+      <rect x="187" y="172" width="26" height="26" fill="#b9bdf2"/>
+      <ellipse cx="200" cy="203" rx="38" ry="7" fill="#9ca1ea"/>
+      <ellipse cx="200" cy="200" rx="38" ry="7" fill="#b7bbf4"/>
+      <!-- monitor -->
+      <rect x="112" y="46" width="176" height="130" rx="9" fill="#f6f7ff"/>
+      <path d="M112 55a9 9 0 0 1 9-9h158a9 9 0 0 1 9 9v7H112z" fill="#6b72f2"/>
+      <g fill="#fff"><circle cx="124" cy="54" r="2.6"/><circle cx="134" cy="54" r="2.6" fill-opacity=".8"/><circle cx="144" cy="54" r="2.6" fill-opacity=".6"/></g>
+      <rect x="120" y="70" width="160" height="98" rx="4" fill="url(#gscr)"/>
+      <g fill="url(#gbar)">
+        <rect x="130" y="124" width="14" height="38" rx="3"/><rect x="150" y="108" width="14" height="54" rx="3"/>
+        <rect x="170" y="116" width="14" height="46" rx="3"/><rect x="190" y="92" width="14" height="70" rx="3"/>
+        <rect x="210" y="102" width="14" height="60" rx="3"/><rect x="230" y="80" width="14" height="82" rx="3"/>
+      </g>
+      <polyline points="132,104 156,88 178,98 198,76 220,84 238,66" fill="none" stroke="#1db684" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="238" cy="66" r="4.5" fill="#1db684" stroke="#fff" stroke-width="2"/>
+      <g fill="#dcdffa"><rect x="252" y="86" width="22" height="6" rx="3"/><rect x="252" y="100" width="16" height="6" rx="3"/><rect x="252" y="114" width="20" height="6" rx="3"/></g>
+      <!-- donut card -->
+      <rect x="296" y="28" width="68" height="68" rx="12" fill="#fff"/>
+      <circle cx="330" cy="62" r="19" fill="none" stroke="#6b72f2" stroke-width="11"/>
+      <circle cx="330" cy="62" r="19" fill="none" stroke="#f5a623" stroke-width="11" stroke-dasharray="26 120" transform="rotate(140 330 62)"/>
+      <circle cx="330" cy="62" r="19" fill="none" stroke="#e5e7ff" stroke-width="11" stroke-dasharray="14 120" transform="rotate(-95 330 62)"/>
+      <!-- chat bubble -->
+      <path d="M44 28h72a12 12 0 0 1 12 12v22a12 12 0 0 1-12 12H66l-14 12v-12h-8a12 12 0 0 1-12-12V40a12 12 0 0 1 12-12z" fill="#1db684"/>
+      <g fill="#fff"><circle cx="64" cy="51" r="4"/><circle cx="80" cy="51" r="4"/><circle cx="96" cy="51" r="4"/></g>
+      <!-- document card -->
+      <g transform="rotate(-8 62 160)">
+        <rect x="28" y="108" width="68" height="92" rx="9" fill="#fff"/>
+        <rect x="38" y="120" width="30" height="8" rx="4" fill="#6b72f2"/>
+        <g fill="#dfe2fb"><rect x="38" y="138" width="48" height="5" rx="2.5"/><rect x="38" y="150" width="42" height="5" rx="2.5"/><rect x="38" y="162" width="46" height="5" rx="2.5"/></g>
+        <rect x="38" y="178" width="24" height="9" rx="4.5" fill="#1db684"/>
+      </g>
+      <!-- coins -->
+      <g>
+        <ellipse cx="102" cy="268" rx="26" ry="9" fill="#d9941c"/>
+        <rect x="76" y="256" width="52" height="12" fill="#f2b232"/><ellipse cx="102" cy="256" rx="26" ry="9" fill="#f7c85a"/>
+        <ellipse cx="102" cy="254" rx="26" ry="9" fill="#d9941c"/>
+        <rect x="76" y="242" width="52" height="12" fill="#f2b232"/><ellipse cx="102" cy="242" rx="26" ry="9" fill="#f7c85a"/>
+        <ellipse cx="102" cy="240" rx="26" ry="9" fill="#d9941c"/>
+        <rect x="76" y="228" width="52" height="12" fill="#f2b232"/><ellipse cx="102" cy="228" rx="26" ry="9" fill="#fbd97a"/>
+      </g>
+      <!-- plant with check leaf -->
+      <path d="M216 214l12 12 22-26" fill="none" stroke="#1db684" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="219" y="228" width="20" height="22" rx="4" fill="#fff"/>
+      <rect x="219" y="228" width="20" height="5" rx="2" fill="#dfe2fb"/>
+      <!-- boxes -->
+      <polygon points="329,205 358,219 329,233 300,219" fill="#fbb844"/>
+      <polygon points="300,219 329,233 329,268 300,254" fill="#e8921a"/>
+      <polygon points="329,233 358,219 358,254 329,268" fill="#f5a623"/>
+      <polygon points="329,177 347,186 329,195 311,186" fill="#fcc766"/>
+      <polygon points="311,186 329,195 329,215 311,206" fill="#e8921a"/>
+      <polygon points="329,195 347,186 347,206 329,215" fill="#f5a623"/>
     </svg>
     <p>Sales · Payments · Warehouse · Payroll · Reports</p>
   </div>
