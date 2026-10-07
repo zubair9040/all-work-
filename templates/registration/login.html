@@ -133,7 +133,8 @@
     <form method="post" id="login-form" novalidate>
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ next }}">
-      {% if form.errors %}<div class="err" role="alert">Incorrect username or password. Please try again.</div>{% endif %}
+      {% if locked_minutes %}<div class="err" role="alert">Too many failed attempts. Please try again in about {{ locked_minutes }} minute{{ locked_minutes|pluralize }}.</div>
+      {% elif form.errors %}<div class="err" role="alert">Incorrect username or password. Please try again.</div>{% endif %}
 
       <label for="id_username">Username</label>
       <input type="text" name="username" id="id_username" placeholder="Enter your username"

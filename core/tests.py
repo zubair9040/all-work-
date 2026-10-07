@@ -161,3 +161,52 @@ class DashboardTests(TestCase):
 
     def test_low_stock_listed(self):
         self.assertEqual([p.sku for p in self.client.get("/").context["low_stock"]], ["A1"])
+
+
+class LockoutTests(TestCase):
+    def setUp(self):
+        get_user_model().objects.create_user("bob", password="pw12345!")
+
+    def bad(self, user="bob", n=1):
+        for _ in range(n):
+            r = self.client.post("/login/", {"username": user, "password": "wrong"})
+        return r
+
+    def test_locks_after_five_failures_even_with_right_password(self):
+        r = self.bad(n=5)
+        self.assertContains(r, "Incorrect username or password")  # 5th failure still a normal error
+        r = self.client.post("/login/", {"username": "bob", "password": "pw12345!"})
+        self.assertContains(r, "Too many failed attempts")
+        self.assertNotIn("_auth_user_id", self.client.session)
+
+    def test_four_failures_do_not_lock(self):
+        self.bad(n=4)
+        r = self.client.post("/login/", {"username": "bob", "password": "pw12345!"})
+        self.assertRedirects(r, "/", fetch_redirect_response=False)
+
+    def test_lock_expires_after_window(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        from core.models import LoginAttempt
+        self.bad(n=5)
+        LoginAttempt.objects.update(created_at=timezone.now() - timedelta(minutes=16))
+        r = self.client.post("/login/", {"username": "bob", "password": "pw12345!"})
+        self.assertRedirects(r, "/", fetch_redirect_response=False)
+
+    def test_success_clears_failures(self):
+        from core.models import LoginAttempt
+        self.bad(n=3)
+        self.client.post("/login/", {"username": "bob", "password": "pw12345!"})
+        self.assertEqual(LoginAttempt.objects.count(), 0)
+
+    def test_other_username_unaffected_by_user_lock(self):
+        get_user_model().objects.create_user("amy", password="pw12345!")
+        self.bad(n=5)
+        r = self.client.post("/login/", {"username": "amy", "password": "pw12345!"})
+        self.assertRedirects(r, "/", fetch_redirect_response=False)
+
+    def test_ip_wide_lock(self):
+        for i in range(20):
+            self.client.post("/login/", {"username": f"ghost{i}", "password": "x"})
+        r = self.client.post("/login/", {"username": "bob", "password": "pw12345!"})
+        self.assertContains(r, "Too many failed attempts")

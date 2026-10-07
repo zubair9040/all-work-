@@ -9,6 +9,7 @@ A Django-based ERP for a trading/retail business.
 - **Accounting** – chart of accounts, double-entry journal (always balanced), payments against invoices/POs
 - **HR** – departments, employees, leave requests, payslips posted to the ledger
 - **Dashboard** at `/` – sales, receivables, payables, profit, low stock, overdue invoices
+- **Login** at `/login/` with remember-me and lockout (5 failed attempts per username, or 20 per device, blocks sign-in for 15 minutes)
 
 Day-to-day work is done in the Django admin (`/admin/`) using the order/payslip actions.
 

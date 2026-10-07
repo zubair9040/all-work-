@@ -30,3 +30,11 @@ class NumberedMixin(models.Model):
 
 class ERPError(Exception):
     """Business-rule violation (e.g. insufficient stock)."""
+
+
+class LoginAttempt(models.Model):
+    """One failed sign-in. Rows are deleted after a successful login by that user/IP."""
+
+    username = models.CharField(max_length=150, db_index=True)
+    ip = models.GenericIPAddressField(null=True, blank=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
