@@ -1,65 +1,108 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ERP Dashboard</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard - ERP System</title>
 <style>
-  body{font-family:system-ui,sans-serif;margin:0;background:#f4f6f8;color:#1c2733}
-  header{background:#1f3a5f;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
-  header a{color:#fff;margin-left:16px}
-  main{max-width:1100px;margin:24px auto;padding:0 16px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-  .card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 3px #0001}
-  .card b{display:block;font-size:1.6em;margin-top:6px}
-  h2{margin-top:28px}
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
-  td,th{padding:8px 12px;text-align:left;border-bottom:1px solid #eee}
-  .nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-  .nav a{background:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;color:#1f3a5f;box-shadow:0 1px 3px #0001}
-</style>
-</head>
-<body>
-<header><strong>ERP</strong><span>{{ request.user }}<a href="/admin/">Admin</a><form method="post" action="/logout/" style="display:inline">{% csrf_token %}<button style="margin-left:16px;background:none;border:0;color:#fff;cursor:pointer;font:inherit;text-decoration:underline">Sign out</button></form></span></header>
-<main>
-  <div class="grid">
-    <div class="card">Sales this month<b>{{ month_sales }}</b></div>
-    <div class="card">Receivable<b>{{ receivable }}</b></div>
-    <div class="card">Payable<b>{{ payable }}</b></div>
-    <div class="card">Net profit<b>{{ profit }}</b></div>
-    <div class="card">Draft sales orders<b>{{ draft_sales }}</b></div>
-    <div class="card">Draft purchase orders<b>{{ draft_purchases }}</b></div>
-    <div class="card">Active employees<b>{{ employees }}</b></div>
-    <div class="card">Pending leave<b>{{ pending_leave }}</b></div>
+
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#f3f4fb;color:#1e1b4b;display:flex;min-height:100vh}
+aside{width:232px;background:#262d5e;color:#cfd2ff;padding:20px 14px;flex:none}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:17px;padding:0 8px 22px}.brand span{color:#8c93ff}
+aside h6{margin:18px 10px 6px;font-size:10px;letter-spacing:1px;color:#8187c9;text-transform:uppercase}
+aside a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:#cfd2ff;font-size:13.5px;text-decoration:none}
+aside a.on{background:linear-gradient(90deg,#5b63f0,#7c5cf0);color:#fff;box-shadow:0 4px 12px #5b63f066}
+aside a i{width:16px;height:16px;border-radius:5px;background:#ffffff26;display:inline-block}aside a.on i{background:#fff6}
+.main{flex:1;min-width:0}
+.top{display:flex;align-items:center;gap:14px;padding:14px 28px;background:#fff;box-shadow:0 1px 0 #e7e9f5}
+.search{flex:1;max-width:380px;background:#f3f4fb;border-radius:10px;padding:9px 14px;font-size:13px;color:#8a8fb3}
+.user{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:13px}.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#5b63f0,#7c5cf0);color:#fff;display:grid;place-items:center;font-weight:700}
+.pad{padding:24px 28px}
+h1{font-size:22px;margin:0 0 2px}.sub{font-size:13px;color:#6b7280;margin:0 0 20px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px #2a307a10}
+.kpi small{color:#6b7280;font-size:12px}.kpi b{display:block;font-size:24px;margin:6px 0 4px}
+.chip{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;float:right;font-size:15px}
+.up{color:#0f9d6e;font-size:12px;font-weight:600}.dn{color:#d14343;font-size:12px;font-weight:600}
+.grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-top:14px}.grid2.even{grid-template-columns:1fr 1fr}.tabs{display:none}
+.card h3{margin:0 0 12px;font-size:14px;display:flex;justify-content:space-between}.card h3 a{font-size:12px;color:#5b63f0;font-weight:500}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:9px 6px;text-align:left;border-bottom:1px solid #eef0fa}th{font-size:11px;color:#8a8fb3;text-transform:uppercase;letter-spacing:.5px}
+.pill{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}.red{background:#fee2e2;color:#b91c1c}.amb{background:#fef3c7;color:#b45309}
+.qa{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.qa a{background:#f3f4fb;border-radius:10px;padding:12px;font-size:13px;color:#3730a3;font-weight:600;text-decoration:none}
+
+@media(max-width:900px){.grid2.even{grid-template-columns:1fr}.main{padding-bottom:64px}.search{max-width:none}.user div:last-child{display:none}.tabs{display:flex;position:fixed;left:0;right:0;bottom:0;background:#262d5e;justify-content:space-around;padding:8px 4px 10px;z-index:5}.tabs a{color:#aab0ff;font-size:10.5px;text-align:center;flex:1}.tabs a.on{color:#fff;font-weight:700}.tabs i{display:block;width:22px;height:22px;border-radius:7px;background:#ffffff2a;margin:0 auto 3px}.tabs a.on i{background:linear-gradient(135deg,#5b63f0,#7c5cf0)}aside{display:none}.kpis{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.pad{padding:18px 14px}.top{padding:12px 14px}}
+.search{border:0;font:inherit;outline:none;color:#1e1b4b}.search:focus{outline:2px solid #818cf8}.top form.s{flex:1;max-width:380px;display:flex}.top form.s .search{width:100%}.signout{background:none;border:0;color:#5b63f0;font:inherit;font-size:12px;cursor:pointer;padding:0}.empty{color:#8a8fb3;font-size:13px;padding:10px 0}.muted{margin:0;color:#6b7280;font-size:12px}aside a:hover{background:#ffffff14}.card h3 a,.tabs a{text-decoration:none}.qa a:hover{background:#e6e8fb}
+</style></head><body>
+<aside>
+  <div class="brand"><svg width="28" height="28" viewBox="0 0 30 30"><polygon points="15,1 28,8 28,22 15,29 2,22 2,8" fill="#6366f1"/><circle cx="15" cy="15" r="2.5" fill="#fff"/><path d="M15 15V8M15 15l-6 4M15 15l6 4" stroke="#fff" stroke-width="2"/></svg>ERP <span>System</span></div>
+  <a class="on" href="/"><i></i>Dashboard</a>
+  <h6>Operations</h6>
+  <a href="/admin/inventory/product/"><i></i>Inventory</a>
+  <a href="/admin/sales/salesorder/"><i></i>Sales</a>
+  <a href="/admin/purchasing/purchaseorder/"><i></i>Purchasing</a>
+  <h6>Finance</h6>
+  <a href="/admin/sales/invoice/"><i></i>Invoices</a>
+  <a href="/admin/accounting/payment/"><i></i>Payments</a>
+  <a href="/admin/accounting/journalentry/"><i></i>Accounting</a>
+  <h6>People</h6>
+  <a href="/admin/hr/employee/"><i></i>Employees</a>
+  <a href="/admin/hr/payslip/"><i></i>Payroll</a>
+  <h6>System</h6>
+  <a href="/admin/"><i></i>Admin panel</a>
+</aside>
+<div class="main">
+  <div class="top">
+    <form class="s" action="/admin/inventory/product/" method="get"><input class="search" type="search" name="q" placeholder="Search products by name or SKU…" aria-label="Search products"></form>
+    <div class="user"><div class="av">{{ display_name|first|upper }}</div>
+      <div>{{ display_name }}<br>
+        <form method="post" action="/logout/" style="display:inline">{% csrf_token %}<button class="signout">Sign out</button></form></div></div>
   </div>
+  <div class="pad">
+    <h1>{{ greeting }}, {{ display_name }}</h1>
+    <p class="sub">Here's how M.R Enterprises is doing today.</p>
 
-  <h2>Modules</h2>
-  <div class="nav">
-    <a href="/admin/inventory/product/">Products</a>
-    <a href="/admin/inventory/stockmovement/">Stock ledger</a>
-    <a href="/admin/sales/salesorder/">Sales orders</a>
-    <a href="/admin/sales/invoice/">Invoices</a>
-    <a href="/admin/purchasing/purchaseorder/">Purchase orders</a>
-    <a href="/admin/accounting/payment/">Payments</a>
-    <a href="/admin/accounting/account/">Chart of accounts</a>
-    <a href="/admin/accounting/journalentry/">Journal</a>
-    <a href="/admin/hr/employee/">Employees</a>
-    <a href="/admin/hr/payslip/">Payroll</a>
+    <div class="kpis">
+      <div class="card kpi"><div class="chip" style="background:#e0e7ff;color:#4338ca">£</div><small>Sales this month</small><b>£{{ month_sales|floatformat:"0g" }}</b>
+        {% if sales_change is None %}<span class="muted">No sales last month</span>
+        {% elif sales_change >= 0 %}<span class="up">▲ {{ sales_change }}% vs last month</span>
+        {% else %}<span class="dn">▼ {{ sales_change }}% vs last month</span>{% endif %}</div>
+      <div class="card kpi"><div class="chip" style="background:#d1fae5;color:#047857">↓</div><small>Receivable</small><b>£{{ receivable|floatformat:"0g" }}</b>
+        {% if overdue_count %}<span class="dn">{{ overdue_count }} invoice{{ overdue_count|pluralize }} overdue</span>{% else %}<span class="up">Nothing overdue</span>{% endif %}</div>
+      <div class="card kpi"><div class="chip" style="background:#fef3c7;color:#b45309">↑</div><small>Payable</small><b>£{{ payable|floatformat:"0g" }}</b>
+        <span class="muted">{{ unpaid_po_count }} unpaid purchase order{{ unpaid_po_count|pluralize }}</span></div>
+      <div class="card kpi"><div class="chip" style="background:#ede9fe;color:#6d28d9">%</div><small>Net profit</small><b>£{{ profit|floatformat:"0g" }}</b>
+        {% if margin is None %}<span class="muted">No revenue yet</span>{% else %}<span class="{% if margin >= 0 %}up{% else %}dn{% endif %}">{{ margin }}% margin</span>{% endif %}</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><h3>Sales, last 6 months</h3>
+        <svg viewBox="0 0 520 190" width="100%" role="img" aria-label="Monthly sales bar chart">
+          <g stroke="#eef0fa"><line x1="30" x2="510" y1="20" y2="20"/><line x1="30" x2="510" y1="65" y2="65"/><line x1="30" x2="510" y1="110" y2="110"/><line x1="30" x2="510" y1="145" y2="145"/></g>
+          <text x="0" y="24" font-size="10" fill="#8a8fb3">£{{ chart_peak_label|floatformat:"0g" }}</text>
+          <defs><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b63f0"/><stop offset="1" stop-color="#a5aaf8"/></linearGradient></defs>
+          {% for m in chart %}
+          <rect x="{{ m.x }}" y="{{ m.y }}" width="42" height="{{ m.height }}" rx="6" fill="{% if forloop.last %}#7c5cf0{% else %}url(#b){% endif %}"><title>{{ m.label }}: £{{ m.total|floatformat:"0g" }}</title></rect>
+          <text x="{{ m.cx }}" y="168" font-size="11" fill="#6b7280" text-anchor="middle">{{ m.label }}</text>
+          {% endfor %}
+        </svg>
+      </div>
+      <div class="card"><h3>Quick actions</h3>
+        <div class="qa"><a href="/admin/sales/salesorder/add/">+ New sale</a><a href="/admin/purchasing/purchaseorder/add/">+ New purchase</a><a href="/admin/inventory/product/add/">+ Add product</a><a href="/admin/accounting/payment/add/">+ Record payment</a></div>
+        <h3 style="margin-top:18px">Pending</h3>
+        <table><tr><td>Draft sales orders</td><td><b>{{ draft_sales }}</b></td></tr><tr><td>Draft purchase orders</td><td><b>{{ draft_purchases }}</b></td></tr><tr><td>Leave requests</td><td><b>{{ pending_leave }}</b></td></tr><tr><td>Active employees</td><td><b>{{ employees }}</b></td></tr></table>
+      </div>
+    </div>
+
+    <div class="grid2 even">
+      <div class="card"><h3>Low stock <a href="/admin/inventory/product/">View all</a></h3>
+        {% if low_stock %}<table><tr><th>Product</th><th>On hand</th><th>Reorder at</th></tr>
+          {% for p in low_stock %}<tr><td>{{ p.name }} ({{ p.sku }})</td><td><span class="pill {% if p.on_hand <= 0 %}red{% else %}amb{% endif %}">{{ p.on_hand }}</span></td><td>{{ p.reorder_level }}</td></tr>{% endfor %}
+        </table>{% else %}<p class="empty">Nothing to reorder.</p>{% endif %}</div>
+      <div class="card"><h3>Overdue invoices <a href="/admin/sales/invoice/">View all</a></h3>
+        {% if overdue %}<table><tr><th>Invoice</th><th>Customer</th><th>Balance</th></tr>
+          {% for i in overdue %}<tr><td>{{ i.number }}</td><td>{{ i.order.customer }}</td><td>£{{ i.balance_due|floatformat:"2g" }}</td></tr>{% endfor %}
+        </table>{% else %}<p class="empty">No overdue invoices.</p>{% endif %}</div>
+    </div>
   </div>
-
-  <h2>Low stock</h2>
-  <table>
-    <tr><th>SKU</th><th>Product</th><th>On hand</th><th>Reorder level</th></tr>
-    {% for p in low_stock %}<tr><td>{{ p.sku }}</td><td>{{ p.name }}</td><td>{{ p.on_hand }}</td><td>{{ p.reorder_level }}</td></tr>
-    {% empty %}<tr><td colspan="4">Nothing to reorder.</td></tr>{% endfor %}
-  </table>
-
-  <h2>Overdue invoices</h2>
-  <table>
-    <tr><th>Invoice</th><th>Customer</th><th>Due</th><th>Balance</th></tr>
-    {% for i in overdue %}<tr><td>{{ i.number }}</td><td>{{ i.order.customer }}</td><td>{{ i.due_date }}</td><td>{{ i.balance_due }}</td></tr>
-    {% empty %}<tr><td colspan="4">None.</td></tr>{% endfor %}
-  </table>
-</main>
-</body>
-</html>
+</div>
+<nav class="tabs">
+  <a class="on" href="/"><i></i>Home</a><a href="/admin/sales/salesorder/"><i></i>Sales</a><a href="/admin/inventory/product/"><i></i>Stock</a><a href="/admin/sales/invoice/"><i></i>Finance</a><a href="/admin/"><i></i>More</a>
+</nav>
+</body></html>

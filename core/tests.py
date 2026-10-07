@@ -127,3 +127,37 @@ class LoginPageTests(TestCase):
     def test_logout(self):
         self.client.force_login(self.u)
         self.assertRedirects(self.client.post("/logout/"), "/login/", fetch_redirect_response=False)
+
+
+class DashboardTests(TestCase):
+    def setUp(self):
+        u = get_user_model().objects.create_superuser("boss", "b@x.com", "pw")
+        self.client.force_login(u)
+        self.wh = Warehouse.objects.create(name="Main")
+        self.p = Product.objects.create(sku="A1", name="Widget", cost_price=4, sale_price=10, reorder_level=5)
+
+    def test_empty_dashboard_renders(self):
+        r = self.client.get("/")
+        self.assertContains(r, "boss")
+        self.assertContains(r, "No overdue invoices")
+        self.assertContains(r, "No sales last month")
+
+    def test_figures_with_data(self):
+        sup = Supplier.objects.create(name="S")
+        po = PurchaseOrder.objects.create(supplier=sup, warehouse=self.wh)
+        PurchaseOrderLine.objects.create(order=po, product=self.p, quantity=20, unit_cost=4)
+        po.receive()
+        so = SalesOrder.objects.create(customer=Customer.objects.create(name="C"), warehouse=self.wh)
+        SalesOrderLine.objects.create(order=so, product=self.p, quantity=3)
+        so.confirm()
+        r = self.client.get("/")
+        self.assertEqual(r.context["month_sales"], 30)
+        self.assertEqual(r.context["receivable"], 30)
+        self.assertEqual(r.context["payable"], 80)
+        self.assertEqual(r.context["profit"], 18)          # 30 revenue - 12 COGS
+        self.assertEqual(r.context["chart"][-1]["total"], 30)
+        self.assertEqual(len(r.context["chart"]), 6)
+        self.assertEqual(len(r.context["low_stock"]), 0)   # 17 on hand > 5
+
+    def test_low_stock_listed(self):
+        self.assertEqual([p.sku for p in self.client.get("/").context["low_stock"]], ["A1"])
